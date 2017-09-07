@@ -8,12 +8,15 @@ from flask import redirect
 from flask import abort
 from flask import url_for
 from flask import render_template
+from datetime import datetime
 from flask_script import Manager
 from flask_bootstrap import Bootstrap
+from flask_moment import Moment
 
 app = Flask(__name__)
 manager = Manager(app)
 bootstrap = Bootstrap(app)
+moment = Moment(app)
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -32,7 +35,7 @@ def index():
     #response.set_cookie('answer', '42')
     #return response
 
-    return render_template('index.html')
+    return render_template('index.html', current_time=datetime.utcnow())
 
 
 @app.route('/user/<name>')
