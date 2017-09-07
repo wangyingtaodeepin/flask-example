@@ -7,8 +7,10 @@ from flask import make_response
 from flask import redirect
 from flask import abort
 from flask import url_for
+from flask_script import Manager
 
 app = Flask(__name__)
+manager = Manager(app)
 
 @app.route('/')
 def index():
@@ -40,4 +42,4 @@ def make_responseTest():
     return '<h1>Hello</h1>'
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    manager.run()
