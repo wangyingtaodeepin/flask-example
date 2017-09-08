@@ -1,12 +1,11 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-from . import db
-from . import login_manager
-from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
+from flask_login import UserMixin
+from . import db, login_manager
 
 class Role(db.Model):
     __tablename__ = 'roles'
@@ -56,7 +55,22 @@ class User(UserMixin, db.Model):
 
         self.confirmed = True
         db.session.add(self)
+        return True
 
+    def generate_reset_token(self, expiration=3600):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'reset': self.id})
+
+    def reset_password(self, token, new_password):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return False
+        if data.get('reset') != self.id:
+            return False
+        self.password = new_password
+        db.session.add(self)
         return True
 
 @login_manager.user_loader
