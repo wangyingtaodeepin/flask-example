@@ -7,3 +7,6 @@
 
 # recovery virtualenv enviroment
 (venv) $ pip install -r requirements.txt
+
+# backup virtualenv enviroment
+(venv) $ pip freeze > requirements.txt
