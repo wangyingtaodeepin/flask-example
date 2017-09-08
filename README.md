@@ -1,6 +1,7 @@
 # flask-example
 
 # handle database migration
+(venv) $ python hello.py db init
 (venv) $ python hello.py db migrate -m "initial migration"
 (venv) $ python hello.py db upgrade
 (venv) $ python hello.py db downgrade
